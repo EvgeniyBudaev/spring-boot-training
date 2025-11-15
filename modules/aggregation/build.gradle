@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.7'
-    id 'io.spring.dependency-management' version '1.1.7'
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.boot.dependency.management)
 }
 
 group = 'com'
@@ -25,30 +25,38 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+    // Spring Boot
+    implementation libs.springdoc
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.kafka:spring-kafka'
-    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    implementation("javax.persistence:javax.persistence-api:2.2")
-    implementation 'org.flywaydb:flyway-core:10.17.1'
-    implementation 'org.flywaydb:flyway-database-postgresql:10.17.1'
-    implementation 'org.flywaydb:flyway-gradle-plugin:10.17.1'
-    implementation 'org.mapstruct:mapstruct:1.6.3'
-    implementation("org.aspectj:aspectjtools:1.9.24")
-    implementation("org.postgresql:postgresql:42.7.8")
-    compileOnly 'org.projectlombok:lombok'
-    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    // Javax
+//    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+//    implementation("javax.persistence:javax.persistence-api:2.2")
+//    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    // Flyway
+    implementation libs.flyway.core
+    implementation libs.flyway.postgresql
+    implementation libs.flyway.plugin
+    // Postgresql
+    implementation("org.postgresql:postgresql")
+    runtimeOnly 'org.postgresql:postgresql'
+    // Mapstruct
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // Aspect
+    implementation libs.aspectj.tools
 }
 
 tasks.named('test') {

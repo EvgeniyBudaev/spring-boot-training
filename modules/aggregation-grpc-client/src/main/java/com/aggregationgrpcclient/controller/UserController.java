@@ -1,6 +1,5 @@
 package com.aggregationgrpcclient.controller;
 
-import com.aggregationgrpc.UserResponse;
 import com.aggregationgrpcclient.aspect.LogMethodExecutionTime;
 import com.aggregationgrpcclient.controller.dto.response.UserResponseDto;
 import com.aggregationgrpcclient.service.grpc.GrpcUserService;

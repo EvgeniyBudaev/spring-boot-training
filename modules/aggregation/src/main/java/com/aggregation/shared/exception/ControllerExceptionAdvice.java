@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.persistence.EntityNotFoundException;
+//import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -76,7 +76,7 @@ public class ControllerExceptionAdvice {
     }
 
     @ExceptionHandler(exception = {
-            EntityNotFoundException.class,
+//            EntityNotFoundException.class, // for JPA
             EmptyResultDataAccessException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)

@@ -4,3 +4,49 @@ include 'modules:aggregation'
 include 'modules:aggregation-grpc-client'
 include 'modules:aggregation-grpc-server'
 include 'modules:aggregation-kafka-consumer'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            version('aspectj', '1.9.24')
+            version('flyway', '10.17.1')
+            version('javax-validation', '2.0.1.Final')
+            version('javax-persistence', '2.2')
+            version('javax-servlet', '4.0.1')
+            version('mapstruct', '1.6.3')
+            version('springdoc', '2.8.13')
+            version('spring-grpc', '0.12.0')
+
+            plugin('spring-boot', 'org.springframework.boot')
+                .version('3.5.7')
+            plugin('spring-boot.dependency-management', 'io.spring.dependency-management')
+                .version('1.1.7')
+            plugin('protobuf', 'com.google.protobuf')
+                .version('0.9.5')
+
+            // AspectJ
+            library('aspectj-tools', 'org.aspectj', 'aspectjtools')
+                    .versionRef('aspectj')
+            // Flyway
+            library('flyway-core', 'org.flywaydb', 'flyway-core')
+                    .versionRef('flyway')
+            library('flyway-postgresql', 'org.flywaydb', 'flyway-database-postgresql')
+                    .versionRef('flyway')
+            library('flyway-plugin', 'org.flywaydb', 'flyway-gradle-plugin')
+                    .versionRef('flyway')
+            // MapStruct
+            library('mapstruct', 'org.mapstruct', 'mapstruct')
+                .versionRef('mapstruct')
+            library('mapstruct-processor', 'org.mapstruct', 'mapstruct-processor')
+                    .versionRef('mapstruct')
+            // SpringDoc (OpenAPI)
+            library('springdoc', 'org.springdoc', 'springdoc-openapi-starter-webmvc-ui')
+                    .versionRef('springdoc')
+            // Spring gRPC
+            library('spring-grpc-starter', 'org.springframework.grpc', 'spring-grpc-spring-boot-starter')
+                    .versionRef('spring-grpc')
+            library('spring-grpc-core', 'org.springframework.grpc', 'spring-grpc')
+                    .versionRef('spring-grpc')
+        }
+    }
+}
