@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.aggregationgrpc";
+//option java_outer_classname = "UserServiceProto";
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (UserResponse) {}
+  rpc GetUser(GetUserRequest) returns (UserResponse) {}
+  rpc UpdateUser(UpdateUserRequest) returns (UserResponse) {}
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+}
+
+message CreateUserRequest {
+  string name = 1;
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message UpdateUserRequest {
+  int64 id = 1;
+  optional string name = 2;
+}
+
+message DeleteUserRequest {
+  int64 id = 1;
+}
+
+message UserResponse {
+  int64 id = 1;
+  string name = 2;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+}
+

@@ -1,0 +1,6 @@
+rootProject.name = 'spring-boot-training'
+
+include 'modules:aggregation'
+include 'modules:aggregation-grpc-client'
+include 'modules:aggregation-grpc-server'
+include 'modules:aggregation-kafka-consumer'

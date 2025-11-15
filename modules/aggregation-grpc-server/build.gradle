@@ -1,0 +1,71 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.protobuf' version '0.9.5'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+description = 'aggregation-grpc-server'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// PostgreSQL + Flyway
+	implementation("org.postgresql:postgresql:42.7.8")
+	implementation 'org.flywaydb:flyway-core:10.17.1'
+	implementation 'org.flywaydb:flyway-database-postgresql:10.17.1'
+	implementation 'org.flywaydb:flyway-gradle-plugin:10.17.1'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// gRPC
+	implementation("org.springframework.grpc:spring-grpc-spring-boot-starter:0.12.0")
+	implementation("org.springframework.grpc:spring-grpc:0.12.0")
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
+
+protobuf {
+	protoc {
+		artifact = "com.google.protobuf:protoc:3.25.8"
+	}
+	plugins {
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.76.0'
+		}
+	}
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
+}

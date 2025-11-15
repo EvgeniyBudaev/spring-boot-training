@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: aggregation-kafka-consumer
+
+server:
+  port: ${PORT}
+

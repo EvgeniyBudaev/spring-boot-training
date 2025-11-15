@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: aggregation-grpc-client
+
+server:
+  port: 9000

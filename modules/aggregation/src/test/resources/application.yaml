@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: aggregation
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tgbot
+    username: postgres
+    password: root
+    driverClassName: org.postgresql.Driver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # V(version)__description.sql
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework: INFO
