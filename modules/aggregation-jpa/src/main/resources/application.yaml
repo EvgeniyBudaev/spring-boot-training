@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: aggregation-jpa
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    default-schema: ${DATASOURCE_SCHEMA_NAME}
+
+server:
+  port: ${AGGREGATION_PORT}
+
+logging:
+  level:
+    org.springframework: ${AGGREGATION_LOGGER_LEVEL}

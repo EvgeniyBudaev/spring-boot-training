@@ -4,6 +4,7 @@ include 'modules:aggregation'
 include 'modules:aggregation-grpc-client'
 include 'modules:aggregation-grpc-server'
 include 'modules:aggregation-kafka-consumer'
+include 'modules:aggregation-jpa'
 
 dependencyResolutionManagement {
     versionCatalogs {

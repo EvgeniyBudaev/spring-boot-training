@@ -1,0 +1,28 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="create_order_table" author="EvgeniyBudaev">
+        <preConditions onFail="MARK_RAN" onError="HALT">
+            <not>
+                <tableExists tableName="orders"/>
+            </not>
+        </preConditions>
+
+        <sql splitStatements="true" stripComments="true">
+            CREATE TABLE IF NOT EXISTS ${DATASOURCE_SCHEMA_NAME}.orders (
+                id BIGSERIAL PRIMARY KEY,
+                total_amount DECIMAL(19,2) NOT NULL,
+                created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+            );
+        </sql>
+
+        <rollback>
+            <dropTable tableName="orders" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.boot.dependency.management)
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+description = 'aggregation-jpa'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    'org.springframework.boot:spring-boot-starter-webmvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // Database
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.testcontainers:testcontainers-postgresql'
+    // Migration
+    implementation 'org.liquibase:liquibase-core:4.25.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
+    // Test
+//    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
