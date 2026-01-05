@@ -4,9 +4,10 @@ import com.aggregation.controller.dto.response.ResponseCatalogCreateDto;
 import com.aggregation.controller.dto.response.ResponseCatalogFindByIdDto;
 import com.aggregation.entity.CatalogEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CatalogMapper {
     CatalogMapper INSTANCE = Mappers.getMapper(CatalogMapper.class);
 

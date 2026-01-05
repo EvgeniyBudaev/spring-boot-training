@@ -29,15 +29,14 @@ public class CatalogController {
     @PostMapping
     @LogMethodExecutionTime
     public ResponseEntity<ResponseCatalogCreateDto> createCatalog(@ModelAttribute @Valid RequestCatalogCreateDto dto) {
-        System.out.println("controller createCatalog: " + dto);
+        log.info("controller createCatalog: dto={}", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(catalogService.create(dto));
     }
 
     @GetMapping("/{id}")
     @LogMethodExecutionTime
     public ResponseEntity<ResponseCatalogFindByIdDto> getCatalogByID(@PathVariable Long id) {
-        System.out.println("controller getCatalogByID id: " + id);
-        log.info("controller getCatalogByID id: {}", id);
+        log.info("controller getCatalogByID: id={}", id);
         return ResponseEntity.status(HttpStatus.OK).body(catalogService.findByID(id));
     }
 }

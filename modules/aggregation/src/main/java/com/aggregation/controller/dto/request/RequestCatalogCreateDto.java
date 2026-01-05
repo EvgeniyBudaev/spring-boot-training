@@ -4,7 +4,6 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 public record RequestCatalogCreateDto(
@@ -19,5 +18,5 @@ public record RequestCatalogCreateDto(
         @Null
         @FutureOrPresent
         Instant updatedAt
-) implements Serializable {
+) {
 }

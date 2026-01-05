@@ -1,6 +1,5 @@
 package com.aggregation.controller.dto.response;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 public record ResponseCatalogFindByIdDto(
@@ -9,5 +8,5 @@ public record ResponseCatalogFindByIdDto(
         String description,
         Instant createdAt,
         Instant updatedAt
-) implements Serializable {
+) {
 }
