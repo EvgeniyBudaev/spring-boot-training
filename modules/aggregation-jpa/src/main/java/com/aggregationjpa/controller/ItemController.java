@@ -31,7 +31,7 @@ public class ItemController {
         log.info("controller createItem: request={}", request);
         itemService.saveItem(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
@@ -71,7 +71,8 @@ public class ItemController {
             @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
             @RequestParam(defaultValue = "5") @Min(1) int pageSize
     ) {
-        log.info("controller getItems: search={}, sortBy={}, sortOrder={}, pageNumber={}, pageSize={}", search, sortBy, sortOrder, pageNumber, pageSize);
+        log.info("controller getItems: search={}, sortBy={}, sortOrder={}, pageNumber={}, pageSize={}",
+                search, sortBy, sortOrder, pageNumber, pageSize);
         PagedResponseItemDto result = itemService.getItems(search, sortBy, sortOrder, pageNumber, pageSize);
 
         return ResponseEntity.ok(result);

@@ -14,11 +14,10 @@ import java.time.Instant;
 public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_items_id_seq")
-    @SequenceGenerator(name = "order_items_id_seq", sequenceName = "order_items_id_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "order_items_id_seq", sequenceName = "order_items_id_seq", allocationSize = 1)
     Long id;
 
-    @ManyToOne
-//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "order_id",
             referencedColumnName = "id",

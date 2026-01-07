@@ -28,7 +28,7 @@
             <column name="price_at_order" type="decimal(19,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="timestamptz" defaultValueComputed="current_timestamp">
+            <column name="created_at" type="timestamp" defaultValueComputed="current_timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>

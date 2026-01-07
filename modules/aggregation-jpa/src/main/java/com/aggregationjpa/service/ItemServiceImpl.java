@@ -59,6 +59,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseItemDto getItem(Long id) {
         ItemEntity itemEntity = itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Item with id=" + id + " not found"));
@@ -67,6 +68,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PagedResponseItemDto getItems(String search, String sortBy, String sortOrder, int pageNumber, int pageSize) {
         // Разрешённые поля для сортировки — защита от SQL-инъекций через имена колонок
         Set<String> allowedFields = Set.of("title", "price");

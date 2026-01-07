@@ -6,7 +6,9 @@
 
     <include file="001-init-items-schema.xml" relativeToChangelogFile="true"/>
     <include file="002-init-orders-schema.xml" relativeToChangelogFile="true"/>
-    <include file="003-init-order-items-schema.xml" relativeToChangelogFile="true"/>
+    <include file="003-init-carts-schema.xml" relativeToChangelogFile="true"/>
+    <include file="004-init-cart-items-schema.xml" relativeToChangelogFile="true"/>
+    <include file="005-init-order-items-schema.xml" relativeToChangelogFile="true"/>
 
     <changeSet id="tag_after_items_creation" author="EvgeniyBudaev">
         <tagDatabase tag="v.0.0.0"/>

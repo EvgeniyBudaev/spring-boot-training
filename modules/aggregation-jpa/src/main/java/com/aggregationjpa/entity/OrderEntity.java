@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_id_seq")
-    @SequenceGenerator(name = "orders_id_seq", sequenceName = "orders_id_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "orders_id_seq", sequenceName = "orders_id_seq", allocationSize = 1)
     Long id;
 
     @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
