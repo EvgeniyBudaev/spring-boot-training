@@ -28,4 +28,6 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
     """)
 //    @EntityGraph(attributePaths = "item") // или используйте JOIN FETCH в @Query
     List<CartItemEntity> findByCartId(@Param("cartId") Long cartId);
+
+    void deleteByCartId(Long cartId);
 }

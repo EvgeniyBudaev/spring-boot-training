@@ -3,7 +3,6 @@ package com.aggregationjpa.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.CurrentTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -38,6 +37,5 @@ public class OrderItemEntity {
     BigDecimal priceAtOrder;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CurrentTimestamp
     Instant createdAt = Instant.now();
 }

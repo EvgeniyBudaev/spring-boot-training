@@ -3,7 +3,6 @@ package com.aggregationjpa.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.CurrentTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -23,7 +22,6 @@ public class OrderEntity {
     BigDecimal totalAmount;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CurrentTimestamp
     Instant createdAt = Instant.now();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
