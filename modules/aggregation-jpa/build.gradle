@@ -32,10 +32,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+    testImplementation libs.testcontainers.junit
+    testImplementation libs.testcontainers.postgresql
     // Hibernate
     implementation 'org.hibernate:hibernate-core:6.6.6.Final'
     // Lombok
@@ -47,10 +47,8 @@ dependencies {
     // Database
     implementation("org.postgresql:postgresql")
     runtimeOnly 'org.postgresql:postgresql'
-    testImplementation 'org.testcontainers:testcontainers-postgresql'
     // Migration
-    implementation 'org.liquibase:liquibase-core:4.25.1'
-    testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
+    implementation 'org.liquibase:liquibase-core:4.29.0'
     // Aspect
     implementation libs.aspectj.tools
 }

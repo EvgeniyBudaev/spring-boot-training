@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: aggregation-jpa
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tgbot
+    username: postgres
+    password: root
+    driverClassName: org.postgresql.Driver
+
+  liquibase:
+    # Отключаем Liquibase в тестах для стабильности
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    default-schema: simple
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework: INFO
