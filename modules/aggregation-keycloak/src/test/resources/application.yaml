@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: aggregation-keycloak
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: root
+    driverClassName: org.postgresql.Driver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # V(version)__description.sql
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/myrealm
+
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework: INFO
+
+app:
+  keycloak:
+    admin:
+      clientId: gravity-backend
+      clientSecret: secret
+    realm: myrealm
+    serverUrl: http://localhost:8080
+    defaultUserGroup: 12312-56757
+    defaultUserRole: customer
+    defaultUserRoleType: realm

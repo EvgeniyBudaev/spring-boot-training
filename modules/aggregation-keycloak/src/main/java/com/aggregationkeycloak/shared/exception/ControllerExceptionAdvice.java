@@ -1,6 +1,6 @@
-package com.aggregation.shared.exception;
+package com.aggregationkeycloak.shared.exception;
 
-import com.aggregation.entity.ErrorEntity;
+import com.aggregationkeycloak.entity.ErrorEntity;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.logging.log4j.util.InternalException;
 import org.postgresql.util.PSQLException;
@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-//import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
-    private static final String SERVICE_NAME = "aggregation-service";
+    private static final String SERVICE_NAME = "aggregation-keycloak-service";
 
     @ExceptionHandler(InternalServerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -86,6 +85,28 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorEntity handleNotFoundException(Exception e) {
         return error(e, "not found", HttpStatus.NOT_FOUND);
+    }
+
+    // Дополнительно: ловим исключения от Keycloak Client (JAX-RS), если они просочатся из сервиса
+    @ExceptionHandler(jakarta.ws.rs.WebApplicationException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorEntity handleWebApplicationException(jakarta.ws.rs.WebApplicationException e) {
+        int status = e.getResponse().getStatus();
+        HttpStatus httpStatus = HttpStatus.resolve(status);
+
+        // Если Keycloak вернул 404, мапим в наше Not Found, иначе - в 500
+        if (httpStatus == HttpStatus.NOT_FOUND) {
+            return error(e, "resource not found", HttpStatus.NOT_FOUND);
+        }
+        return error(e, "external service error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // Глобальная страховка для любых непредвиденных ошибок
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorEntity handleGenericException(Exception e) {
+        // Здесь можно добавить логирование стектрейса
+        return error(e, "internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ErrorEntity error(ApiException e) {

@@ -5,6 +5,7 @@ include 'modules:aggregation-grpc-client'
 include 'modules:aggregation-grpc-server'
 include 'modules:aggregation-kafka-consumer'
 include 'modules:aggregation-jpa'
+include 'modules:aggregation-keycloak'
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -17,6 +18,8 @@ dependencyResolutionManagement {
             version('mapstruct', '1.6.3')
             version('springdoc', '2.8.13')
             version('spring-grpc', '0.12.0')
+            version('testcontainers', '1.19.8')
+            version('keycloak', '24.0.2')
 
             plugin('spring-boot', 'org.springframework.boot')
                 .version('3.5.7')
@@ -48,6 +51,14 @@ dependencyResolutionManagement {
                     .versionRef('spring-grpc')
             library('spring-grpc-core', 'org.springframework.grpc', 'spring-grpc')
                     .versionRef('spring-grpc')
+            // Keycloak
+            library('keycloak', 'org.keycloak', 'keycloak-admin-client')
+                    .versionRef('keycloak')
+            // JPA
+            library('testcontainers-junit', 'org.testcontainers', 'junit-jupiter')
+                    .versionRef('testcontainers')
+            library('testcontainers-postgresql', 'org.testcontainers', 'postgresql')
+                    .versionRef('testcontainers')
         }
     }
 }
