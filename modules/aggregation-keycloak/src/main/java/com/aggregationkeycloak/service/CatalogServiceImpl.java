@@ -1,13 +1,14 @@
-package com.aggregation.service;
+package com.aggregationkeycloak.service;
 
-import com.aggregation.controller.dto.request.RequestCatalogListGetDto;
-import com.aggregation.controller.dto.response.ResponseCatalogFindByIdDto;
-import com.aggregation.entity.PaginationEntity;
-import com.aggregation.repository.CatalogRepository;
-import com.aggregation.service.mapper.CatalogMapper;
-import com.aggregation.controller.dto.request.RequestCatalogCreateDto;
-import com.aggregation.controller.dto.response.ResponseCatalogCreateDto;
-import com.aggregation.entity.CatalogEntity;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogCreateDto;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogListGetDto;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogUpdateDto;
+import com.aggregationkeycloak.controller.dto.response.ResponseCatalogCreateDto;
+import com.aggregationkeycloak.controller.dto.response.ResponseCatalogFindByIdDto;
+import com.aggregationkeycloak.entity.CatalogEntity;
+import com.aggregationkeycloak.entity.PaginationEntity;
+import com.aggregationkeycloak.repository.CatalogRepository;
+import com.aggregationkeycloak.service.mapper.CatalogMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,11 @@ public class CatalogServiceImpl implements CatalogService {
     public ResponseCatalogCreateDto create(RequestCatalogCreateDto dto) {
         CatalogEntity catalogEntity = catalogRepository.createCatalog(dto);
         return catalogMapper.toResponseCreateDto(catalogEntity);
+    }
+
+    @Override
+    public CatalogEntity update(RequestCatalogUpdateDto dto) {
+        return catalogRepository.updateCatalog(dto);
     }
 
     @Override

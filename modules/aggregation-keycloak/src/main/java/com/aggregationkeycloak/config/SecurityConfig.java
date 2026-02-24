@@ -7,70 +7,38 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-
-        return (web) -> {
-            web.ignoring().requestMatchers(
-                    HttpMethod.POST,
-                    "/public/**",
-                    "/api/v1/users",
-                    "/api/v1/profiles",
-                    "/**"
-            );
-            web.ignoring().requestMatchers(
-                    HttpMethod.GET,
-                    "/public/**",
-                    "/api/v1/profiles/**",
-                    "/**"
-            );
-            web.ignoring().requestMatchers(
-                    HttpMethod.DELETE,
-                    "/public/**",
-                    "/api/v1/users/{id}",
-                    "/**"
-            );
-            web.ignoring().requestMatchers(
-                    HttpMethod.PUT,
-                    "/public/**",
-                    "/api/v1/users/{id}/send-verification-email",
-                    "/api/v1/users/forgot-password",
-                    "/**"
-
-            );
-            web.ignoring().requestMatchers(
-                            HttpMethod.OPTIONS,
-                            "/**"
-                    )
-                    .requestMatchers("/v3/api-docs/**", "/configuration/**", "/swagger-ui/**",
-                            "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**");
-        };
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
+                        // 1. Публичный доступ (незалогиненные пользователи)
+                        .requestMatchers(HttpMethod.GET, "/", "/api/v1/catalogs", "/api/v1/catalogs/**").permitAll()
+                        // Остальные запросы требуют аутентификации
                         .anyRequest()
                         .authenticated()
                 )
+//                .anonymous(anonymous -> anonymous
+//                        // Настройка анонимной сессии
+//                        .principal("guest")
+//                        .authorities("ROLE_GUEST")
+//                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthConverter)
                         )
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 }

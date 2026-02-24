@@ -59,8 +59,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
 
         return allRoles.stream()
-//                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // variant for @PreAuthorize("hasRole
-                .map(SimpleGrantedAuthority::new)
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // variant for @PreAuthorize("hasRole")
+//                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
     }
 }

@@ -1,13 +1,14 @@
-package com.aggregation.repository;
+package com.aggregationkeycloak.repository;
 
-import com.aggregation.controller.dto.request.RequestCatalogListGetDto;
-import com.aggregation.entity.PaginationEntity;
-import com.aggregation.repository.mapper.CatalogEntityRowMapper;
-import com.aggregation.shared.exception.InternalServerException;
-import com.aggregation.shared.exception.NotFoundException;
-import com.aggregation.shared.utils.Utils;
-import com.aggregation.controller.dto.request.RequestCatalogCreateDto;
-import com.aggregation.entity.CatalogEntity;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogCreateDto;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogListGetDto;
+import com.aggregationkeycloak.controller.dto.request.RequestCatalogUpdateDto;
+import com.aggregationkeycloak.entity.CatalogEntity;
+import com.aggregationkeycloak.entity.PaginationEntity;
+import com.aggregationkeycloak.repository.mapper.CatalogEntityRowMapper;
+import com.aggregationkeycloak.shared.exception.InternalServerException;
+import com.aggregationkeycloak.shared.exception.NotFoundException;
+import com.aggregationkeycloak.shared.utils.Utils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,6 +25,15 @@ public class CatalogRepositoryImpl implements CatalogRepository {
     private static final String CREATE_CATALOG =
             "INSERT INTO catalogs (name, description, created_at)\n"
                     + "VALUES (:name, :description, :createdAt)\n"
+                    + "RETURNING id, name, description, created_at, updated_at";
+
+    // Запрос для обновления каталога
+    private static final String UPDATE_CATALOG =
+            "UPDATE catalogs\n"
+                    + "SET name = :name,\n"
+                    + "    description = :description,\n"
+                    + "    updated_at = :updatedAt\n"
+                    + "WHERE id = :id\n"
                     + "RETURNING id, name, description, created_at, updated_at";
 
     // Запрос для получения каталога по ID
@@ -61,6 +71,33 @@ public class CatalogRepositoryImpl implements CatalogRepository {
                 parameters,
                 new CatalogEntityRowMapper()
         );
+    }
+
+    @Override
+    public CatalogEntity updateCatalog(RequestCatalogUpdateDto dto) {
+        try {
+            MapSqlParameterSource parameters = new MapSqlParameterSource()
+                    .addValue("id", dto.id())
+                    .addValue("name", dto.name())
+                    .addValue("description", dto.description())
+                    .addValue("updatedAt", Utils.getNowUtc());
+
+            return namedParameterJdbcTemplate.queryForObject(
+                    UPDATE_CATALOG,
+                    parameters,
+                    new CatalogEntityRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException(
+                    "catalog not found",
+                    "catalog with id=" + dto.id() + " does not exist. " + e.getMessage()
+            );
+        } catch (Exception e) {
+            throw new InternalServerException(
+                    "internal server error",
+                    "internal server error. " + e.getMessage()
+            );
+        }
     }
 
     @Override
