@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public record RequestCatalogCreateDto(
         @Null

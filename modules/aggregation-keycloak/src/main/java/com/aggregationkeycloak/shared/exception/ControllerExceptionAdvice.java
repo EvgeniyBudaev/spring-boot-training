@@ -6,6 +6,7 @@ import org.apache.logging.log4j.util.InternalException;
 import org.postgresql.util.PSQLException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,6 +18,18 @@ import java.time.Instant;
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
     private static final String SERVICE_NAME = "aggregation-keycloak-service";
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorEntity handleAuthenticationException(AuthenticationException e) {
+        return error(e);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorEntity handleAccessDeniedException(AccessDeniedException e) {
+        return error(e, "access denied", HttpStatus.FORBIDDEN);
+    }
 
     @ExceptionHandler(InternalServerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

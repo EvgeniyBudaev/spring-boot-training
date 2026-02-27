@@ -52,7 +52,7 @@ public class CatalogController {
 
     @GetMapping("/{id}")
     @LogMethodExecutionTime
-    //    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("@catalogSecurity.isOwnerOrAdmin(#id)")
     public ResponseEntity<ResponseCatalogFindByIdDto> getCatalogByID(@PathVariable Long id) {
         log.info("controller getCatalogByID: id={}", id);
         return ResponseEntity.status(HttpStatus.OK).body(catalogService.findByID(id));
@@ -60,7 +60,7 @@ public class CatalogController {
 
     @GetMapping
     @LogMethodExecutionTime
-    @Secured("ROLE_guest")
+    @Secured("ROLE_guest") // расскоментировать блок anonymous в SecurityConfig.securityFilterChain
     public ResponseEntity<PaginationEntity<List<CatalogEntity>>> getCatalogList(
             @ModelAttribute RequestCatalogListGetDto dto) {
         log.info("controller getCatalogList: dto={}", dto);

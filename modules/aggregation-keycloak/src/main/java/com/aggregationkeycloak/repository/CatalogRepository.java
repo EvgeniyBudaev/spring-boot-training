@@ -7,9 +7,10 @@ import com.aggregationkeycloak.entity.CatalogEntity;
 import com.aggregationkeycloak.entity.PaginationEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CatalogRepository {
-    CatalogEntity createCatalog(RequestCatalogCreateDto dto);
+    CatalogEntity createCatalog(RequestCatalogCreateDto dto, UUID createdBy);
 
     CatalogEntity updateCatalog(RequestCatalogUpdateDto dto);
 

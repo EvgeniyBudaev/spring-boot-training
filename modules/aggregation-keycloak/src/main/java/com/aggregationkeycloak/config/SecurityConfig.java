@@ -27,11 +27,12 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
-//                .anonymous(anonymous -> anonymous
-//                        // Настройка анонимной сессии
-//                        .principal("guest")
-//                        .authorities("ROLE_GUEST")
-//                )
+                .anonymous(anonymous -> anonymous
+                        // Настройка анонимной сессии
+                        .principal("guest")              // Имя анонимного пользователя
+                        .authorities("ROLE_guest")       // Роль анонимного пользователя
+                        .key("uniqueAnonymousKey")       // Уникальный ключ для анонимного токена
+                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthConverter)

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class CatalogRepositoryImpl implements CatalogRepository {
@@ -23,9 +24,9 @@ public class CatalogRepositoryImpl implements CatalogRepository {
 
     // Запрос для создания каталога
     private static final String CREATE_CATALOG =
-            "INSERT INTO catalogs (name, description, created_at)\n"
-                    + "VALUES (:name, :description, :createdAt)\n"
-                    + "RETURNING id, name, description, created_at, updated_at";
+            "INSERT INTO catalogs (name, description, created_by, created_at)\n"
+                    + "VALUES (:name, :description, :createdBy, :createdAt)\n"
+                    + "RETURNING id, name, description, created_by, created_at, updated_at";
 
     // Запрос для обновления каталога
     private static final String UPDATE_CATALOG =
@@ -38,7 +39,7 @@ public class CatalogRepositoryImpl implements CatalogRepository {
 
     // Запрос для получения каталога по ID
     private static final String GET_CATALOG_BY_ID =
-            "SELECT id, name, description, created_at, updated_at\n"
+            "SELECT id, name, description, created_by, created_at, updated_at\n"
                     + "FROM catalogs\n"
                     + "WHERE id = :id";
 
@@ -48,10 +49,14 @@ public class CatalogRepositoryImpl implements CatalogRepository {
 
     // Запрос для получения списка каталогов с пагинацией
     private static final String GET_CATALOG_LIST =
-            "SELECT id, name, description, created_at, updated_at\n"
+            "SELECT id, name, description, created_by, created_at, updated_at\n"
                     + "FROM catalogs\n"
                     + "ORDER BY id\n"
                     + "LIMIT :limit OFFSET :offset";
+
+    // Запрос для получения ID владельца по ID каталога
+    private static final String GET_OWNER_ID_BY_CATALOG_ID =
+            "SELECT created_by FROM catalogs WHERE id = :id";
 
     public CatalogRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -59,10 +64,11 @@ public class CatalogRepositoryImpl implements CatalogRepository {
 
     @Override
     @Transactional
-    public CatalogEntity createCatalog(RequestCatalogCreateDto dto) {
+    public CatalogEntity createCatalog(RequestCatalogCreateDto dto, UUID createdBy) {
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("name", dto.name())
                 .addValue("description", dto.description())
+                .addValue("createdBy", createdBy)
                 .addValue("createdAt", Utils.getNowUtc())
                 .addValue("updatedAt", null)
                 .addValue("lastOnline", Utils.getNowUtc());
@@ -143,5 +149,19 @@ public class CatalogRepositoryImpl implements CatalogRepository {
                 new PaginationEntity<>(page, size, numberEntities);
         paginationEntity.setContent(content);
         return paginationEntity;
+    }
+
+    public UUID findOwnerIdByCatalogId(Long catalogId) {
+        try {
+            MapSqlParameterSource parameters = new MapSqlParameterSource()
+                    .addValue("id", catalogId);
+            return namedParameterJdbcTemplate.queryForObject(
+                    GET_OWNER_ID_BY_CATALOG_ID,
+                    parameters,
+                    UUID.class
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

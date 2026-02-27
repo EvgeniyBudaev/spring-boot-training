@@ -9,9 +9,11 @@ import com.aggregationkeycloak.entity.CatalogEntity;
 import com.aggregationkeycloak.entity.PaginationEntity;
 import com.aggregationkeycloak.repository.CatalogRepository;
 import com.aggregationkeycloak.service.mapper.CatalogMapper;
+import com.aggregationkeycloak.shared.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CatalogServiceImpl implements CatalogService {
@@ -25,7 +27,8 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public ResponseCatalogCreateDto create(RequestCatalogCreateDto dto) {
-        CatalogEntity catalogEntity = catalogRepository.createCatalog(dto);
+        UUID currentUserId = SecurityUtils.getCurrentUserId();
+        CatalogEntity catalogEntity = catalogRepository.createCatalog(dto, currentUserId);
         return catalogMapper.toResponseCreateDto(catalogEntity);
     }
 
@@ -42,6 +45,8 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public PaginationEntity<List<CatalogEntity>> findList(RequestCatalogListGetDto dto) {
+        System.out.println("WWWWWWWWWWWWWWWWWWWWWW isAuthenticated: "+ SecurityUtils.isAuthenticated());
+        System.out.println("WWWWWWWWWWWWWWWWWWWWWW isAnonymous: "+ SecurityUtils.isAnonymous());
         return catalogRepository.findCatalogList(dto);
     }
 }
