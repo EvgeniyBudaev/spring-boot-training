@@ -45,8 +45,8 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public PaginationEntity<List<CatalogEntity>> findList(RequestCatalogListGetDto dto) {
-        System.out.println("WWWWWWWWWWWWWWWWWWWWWW isAuthenticated: "+ SecurityUtils.isAuthenticated());
-        System.out.println("WWWWWWWWWWWWWWWWWWWWWW isAnonymous: "+ SecurityUtils.isAnonymous());
+        System.out.println("isAuthenticated: "+ SecurityUtils.isAuthenticated());
+        System.out.println("isAnonymous: "+ SecurityUtils.isAnonymous());
         return catalogRepository.findCatalogList(dto);
     }
 }

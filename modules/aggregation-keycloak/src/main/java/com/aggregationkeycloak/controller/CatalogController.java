@@ -66,4 +66,13 @@ public class CatalogController {
         log.info("controller getCatalogList: dto={}", dto);
         return ResponseEntity.status(HttpStatus.OK).body(catalogService.findList(dto));
     }
+
+    @GetMapping("/secure")
+    @LogMethodExecutionTime
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PaginationEntity<List<CatalogEntity>>> getCatalogListAuthorized(
+            @ModelAttribute RequestCatalogListGetDto dto) {
+        log.info("controller getCatalogListAuthorized (private): dto={}", dto);
+        return ResponseEntity.status(HttpStatus.OK).body(catalogService.findList(dto));
+    }
 }
